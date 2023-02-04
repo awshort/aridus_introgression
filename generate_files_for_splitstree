@@ -1,0 +1,3 @@
+# Command used to generate files for splitstree from VCF file
+
+python '/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/splitstree/vcf2phylip-2.7/vcf2phylip.py' -i '/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/splitstree/no_missing/nomissing_biallelic_clade_D_aridus_parviflorus.vcf' -f -n -b
