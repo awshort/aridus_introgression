@@ -1,0 +1,4 @@
+# Code used to run dsuite
+
+'/media/aidanwilliamshort/extradrive2/Dsuite/Build/Dsuite' Dtrios '/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/dsuite/nomissing_biallelic_clade_D_aridus_parviflorus.vcf' '/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/dsuite/sets.txt' -t '/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/dsuite/tree.newick' -o clade_D_aridus_parviflorus
+
