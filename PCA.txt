@@ -1,0 +1,12 @@
+# Code used to run PCA from VCF file
+'/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/plink' --pca --bfile nomissing_biallelic_clade_D_aridus_parviflorus.LDpruned
+
+'/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/plink' --vcf nomissing_biallelic_clade_D_aridus_parviflorus.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out clade_D_aridus_parviflorus_no_LD_filter
+
+'/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/plink' --bfile clade_D_aridus_parviflorus_no_LD_filter --remove remove.csv --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out wout_clev_clade_D_aridus_parviflorus_no_LD_filter
+
+'/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/plink' --bfile wout_clev_clade_D_aridus_parviflorus_no_LD_filter --remove remove_2.csv --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out wout_aridus_clade_D_aridus_parviflorus_no_LD_filter
+
+'/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/plink' --bfile wout_aridus_clade_D_aridus_parviflorus_no_LD_filter --remove remove_3.csv --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out wout_parv_clade_D_aridus_parviflorus_no_LD_filter
+
+'/media/aidanwilliamshort/extradrive1/topology_weighting/genome_V1/variants_seperated_VCFs/clade_D_aridus_parviflorus/plink' --bfile wout_parv_clade_D_aridus_parviflorus_no_LD_filter --remove remove_4.csv --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out wout_aur_clade_D_aridus_parviflorus_no_LD_filter
