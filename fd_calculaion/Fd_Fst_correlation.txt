@@ -1,0 +1,63 @@
+# Calculate the Spearman's rank correlation coefficient between Fd and Fst
+
+df1 <- read.csv("Fd.pi_dxy.w_50000.m_5000.raw_unified_genotyper_postBQSR_all_sites.geno.csv", header=TRUE)
+df2 <- subset(df1, Fd_aurantiacus_puncieus_sd_Y_aridus <= 1.0)
+df3 <- subset(df2, Fd_aurantiacus_puncieus_sd_Y_aridus >= 0)
+df4 <- subset(df1, Fd_calycinus_puncieus_sd_Y_aridus <= 1.0)
+df5 <- subset(df4, Fd_calycinus_puncieus_sd_Y_aridus >= 0)
+df6 <- subset(df1, Fd_longiflorus_puncieus_sd_Y_aridus <= 1.0)
+df7 <- subset(df6, Fd_longiflorus_puncieus_sd_Y_aridus >= 0)
+df8 <- subset(df1, Fd_puniceus_oc_puncieus_sd_Y_aridus <= 1.0)
+df9 <- subset(df8, Fd_puniceus_oc_puncieus_sd_Y_aridus >= 0)
+df10 <- subset(df1, Fd_puniceus_sd_R_puncieus_sd_Y_aridus <= 1.0)
+df11 <- subset(df10, Fd_puniceus_sd_R_puncieus_sd_Y_aridus >= 0)
+
+cor.test(df3$pixy_pi_puniceus_sd_Y,df3$Fd_aurantiacus_puncieus_sd_Y_aridus, method="spearman")
+cor.test(df3$Fd_aurantiacus_puncieus_sd_Y_aridus, df3$Fst_aridus_puniceus_sd_Y, method="spearman")
+cor.test(df5$pixy_pi_puniceus_sd_Y,df5$Fd_calycinus_puncieus_sd_Y_aridus, method="spearman")
+cor.test(df5$Fd_calycinus_puncieus_sd_Y_aridus, df5$Fst_aridus_puniceus_sd_Y, method="spearman")
+cor.test(df7$pixy_pi_puniceus_sd_Y,df7$Fd_longiflorus_puncieus_sd_Y_aridus, method="spearman")
+cor.test(df7$Fd_longiflorus_puncieus_sd_Y_aridus, df7$Fst_aridus_puniceus_sd_Y, method="spearman")
+cor.test(df9$pixy_pi_puniceus_sd_Y,df9$Fd_puniceus_oc_puncieus_sd_Y_aridus, method="spearman")
+cor.test(df9$Fd_puniceus_oc_puncieus_sd_Y_aridus, df9$Fst_aridus_puniceus_sd_Y, method="spearman")
+cor.test(df11$pixy_pi_puniceus_sd_Y,df11$Fd_puniceus_sd_R_puncieus_sd_Y_aridus, method="spearman")
+cor.test(df11$Fd_puniceus_sd_R_puncieus_sd_Y_aridus, df11$Fst_aridus_puniceus_sd_Y, method="spearman")
+
+library(svglite)
+svglite("aridus_Fd_Fst_pi_correlations_base_plot_r.svg", height=9, width=19)
+#pdf("aridus_Fd_Fst_pi_correlations_base_plot_r.pdf", height=9, width=19)
+par(mfrow = c(2, 5)) ## set number of plots to produce on the same page, in c(nrows,ncolumns)
+
+par(mar=c(5,5,1.5,1.5)) ###plot margins -- if you always include this, then all plots will have the same dimensions.
+
+plot(df3$Fd_aurantiacus_puncieus_sd_Y_aridus,df3$pixy_pi_puniceus_sd_Y,pch=19,col="blue",ylab=expression(pi),cex=0.5,xlab=expression(italic(F[d])), cex.lab=2, cex.axis=1.5, ylim=c(0.000,0.030), xlim=c(0.0,0.8))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = 0.520")), cex=1.5)
+
+plot(df5$Fd_calycinus_puncieus_sd_Y_aridus,df5$pixy_pi_puniceus_sd_Y,pch=19,col="green",ylab=expression(pi),cex=0.5,xlab=expression(italic(F[d])), cex.lab=2, cex.axis=1.5, ylim=c(0.000,0.030), xlim=c(0.0,0.8))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = 0.543")), cex=1.5)
+
+plot(df7$Fd_longiflorus_puncieus_sd_Y_aridus,df7$pixy_pi_puniceus_sd_Y,pch=19,col="purple",ylab=expression(pi),cex=0.5,xlab=expression(italic(F[d])), cex.lab=2, cex.axis=1.5, ylim=c(0.000,0.030), xlim=c(0.0,0.8))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = 0.576")), cex=1.5)
+
+plot(df9$Fd_puniceus_oc_puncieus_sd_Y_aridus,df9$pixy_pi_puniceus_sd_Y,pch=19,col="orange",ylab=expression(pi),cex=0.5,xlab=expression(italic(F[d])), cex.lab=2, cex.axis=1.5, ylim=c(0.000,0.030), xlim=c(0.0,0.8))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = 0.564")), cex=1.5)
+
+plot(df11$Fd_puniceus_sd_R_puncieus_sd_Y_aridus,df11$pixy_pi_puniceus_sd_Y,pch=19,col="red",ylab=expression(pi),cex=0.5,xlab=expression(italic(F[d])), cex.lab=2, cex.axis=1.5, ylim=c(0.000,0.030), xlim=c(0.0,0.8))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = 0.546")), cex=1.5)
+
+plot(df3$Fd_aurantiacus_puncieus_sd_Y_aridus, df3$Fst_aridus_puniceus_sd_Y,pch=19,col="blue",xlab=expression(italic(F[d])),cex=0.5,ylab=expression(italic(F[st])), cex.lab=2, cex.axis=1.5, xlim=c(0.0,0.8), ylim=c(0.0,0.9))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = -0.606")), cex=1.5)
+
+plot(df5$Fd_calycinus_puncieus_sd_Y_aridus, df5$Fst_aridus_puniceus_sd_Y,pch=19,col="green",xlab=expression(italic(F[d])),cex=0.5,ylab=expression(italic(F[st])), cex.lab=2, cex.axis=1.5, xlim=c(0.0,0.8), ylim=c(0.0,0.9))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = -0.609")), cex=1.5)
+
+plot(df7$Fd_longiflorus_puncieus_sd_Y_aridus, df7$Fst_aridus_puniceus_sd_Y,pch=19,col="purple",xlab=expression(italic(F[d])),cex=0.5,ylab=expression(italic(F[st])), cex.lab=2, cex.axis=1.5, xlim=c(0.0,0.8), ylim=c(0.0,0.9))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = -0.634")), cex=1.5)
+
+plot(df9$Fd_puniceus_oc_puncieus_sd_Y_aridus, df9$Fst_aridus_puniceus_sd_Y,pch=19,col="orange",xlab=expression(italic(F[d])),cex=0.5,ylab=expression(italic(F[st])), cex.lab=2, cex.axis=1.5, xlim=c(0.0,0.8), ylim=c(0.0,0.9))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = -0.616")), cex=1.5)
+
+plot(df11$Fd_puniceus_sd_R_puncieus_sd_Y_aridus, df11$Fst_aridus_puniceus_sd_Y,pch=19,col="red",xlab=expression(italic(F[d])),cex=0.5,ylab=expression(italic(F[st])), cex.lab=2, cex.axis=1.5, xlim=c(0.0,0.8), ylim=c(0.0,0.9))
+legend("topright",lty=NA,lwd=2,pch=NA, bty="n",text.font=5,legend=expression(paste("correlation = -0.611")), cex=1.5)
+
+dev.off()
