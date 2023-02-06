@@ -1,0 +1,18 @@
+#Create VCF with just LG4
+bcftools view 'nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz' --regions LG4 -o LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf
+
+bgzip -c LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf > LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz
+
+tabix -p vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz'
+
+bedtools intersect -a 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz' -b 'MYB2_sites_coords.bed' -header > MYB2.LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf
+
+#Filter FASTA to only include LG4
+
+samtools faidx 'M_aurantiacus_v1_splitline_ordered.fasta' 
+
+samtools faidx 'M_aurantiacus_v1_splitline_ordered.fasta' LG4 > LG4.M_aurantiacus_v1_splitline_ordered.fasta
+
+#Use vcfx to make FASTA from VCF file
+'vcfx_2.0.6b/source/build/vcfx' fasta input='MYB2.LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' output=MYB2.LG4.fasta start=12317113 end=12318500  reference='LG4.M_aurantiacus_v1_splitline_ordered.fasta'
+
