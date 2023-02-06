@@ -1,0 +1,89 @@
+
+win_500kb <- read.table('500kb_win_data_nonoverlap.txt', header=TRUE, na.strings = c(""," ","NA"))
+
+# Replicate each 500kb window 10 times so we have the same number of windows as in the 50kb window file
+rep10_win_500kb <- (win_500kb[rep(seq_len(nrow(win_500kb)), each=10), ])
+nrow(rep10_win_500kb)
+
+# Clipped 50kb windows to only have windows that fall within the 500kb windows in the 500kb_win_data_nonoverlap.txt file
+win_50kb <- read.csv('clipped.Fd.pi_dxy.w_50000.m_5000.raw_unified_genotyper_postBQSR_all_sites.geno.csv')
+win_50kb$cm.mb <- rep10_win_500kb$cm.mb
+win_50kb$gene_count_per_window <- rep10_win_500kb$gene_count_per_window
+win_50kb$cm.mb <- rep10_win_500kb$cm.mb
+win_50kb$gene_count_per_window <- rep10_win_500kb$gene_count_per_window
+quantile(win_50kb$cm.mb, na.rm=T, probs = 0:5/5)
+win_50kb <- within(win_50kb, quantile <-  cut(cm.mb, quantile(cm.mb, na.rm=T, probs = 0:5/5), include.lowest = T))
+head(win_50kb)
+write.csv(win_50kb, "win_50kb_cm.mb_quantiles_3.csv")
+nrow(win_50kb)
+
+win_50kb_aur <- win_50kb
+win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus = ifelse(win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus < 0.0, NA, win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus)
+win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus = ifelse(win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus > 1.0, NA, win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus)
+
+win_50kb_cal <- win_50kb
+win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus = ifelse(win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus < 0.0, NA, win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus)
+win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus = ifelse(win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus > 1.0, NA, win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus)
+
+win_50kb_lon <- win_50kb
+win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus = ifelse(win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus < 0.0, NA, win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus)
+win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus = ifelse(win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus > 1.0, NA, win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus)
+
+win_50kb_oc <- win_50kb
+win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus = ifelse(win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus < 0.0, NA, win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus)
+win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus = ifelse(win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus > 1.0, NA, win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus)
+
+win_50kb_sd_R <- win_50kb
+win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus = ifelse(win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus < 0.0, NA, win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus)
+win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus = ifelse(win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus > 1.0, NA, win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus)
+
+d1 <- data.frame("quantile"=rep(win_50kb$quantile, 5),"Fd"=c(win_50kb_aur$Fd_aurantiacus_puncieus_sd_Y_aridus,win_50kb_cal$Fd_calycinus_puncieus_sd_Y_aridus,win_50kb_lon$Fd_longiflorus_puncieus_sd_Y_aridus,win_50kb_oc$Fd_puniceus_oc_puncieus_sd_Y_aridus,win_50kb_sd_R$Fd_puniceus_sd_R_puncieus_sd_Y_aridus),"P1"=c(rep("aurantiacus", nrow(win_50kb_aur)),rep("calycinus", nrow(win_50kb_cal)), rep("longiflorus", nrow(win_50kb_lon)),rep("puniceus OC", nrow(win_50kb_oc)),rep("puniceus SD red", nrow(win_50kb_sd_R)))) 
+
+d2 <- na.omit(d1)
+nrow(d1)
+nrow(d2)
+lm3 <- lm(Fd~quantile*P1, data=d2)
+anova(lm3)
+summary(lm3)
+
+library(emmeans)
+lm3.emm.da <- emmeans(lm3, pairwise ~ quantile | P1)
+pairs(lm3.emm.da$emmeans)
+
+lm3.emm.da <- emmeans(lm3, pairwise ~ quantile | P1)
+pairs(lm3.emm.da$emmeans)
+
+lm3.emm.da <- emmeans(lm3, pairwise ~ quantile)
+pairs(lm3.emm.da$emmeans)
+
+lm3.emm.da <- emmeans(lm3, pairwise ~ P1)
+pairs(lm3.emm.da$emmeans)
+
+library(Rmisc) 
+
+r1 <- summarySE(na.omit(win_50kb_aur), measurevar=c("Fd_aurantiacus_puncieus_sd_Y_aridus"), groupvars=c("quantile"), na.rm = T)
+r2 <- summarySE(na.omit(win_50kb_cal), measurevar=c("Fd_calycinus_puncieus_sd_Y_aridus"), groupvars=c("quantile"), na.rm = T)
+r3 <- summarySE(na.omit(win_50kb_lon), measurevar=c("Fd_longiflorus_puncieus_sd_Y_aridus"), groupvars=c("quantile"), na.rm = T)
+r4 <- summarySE(na.omit(win_50kb_oc), measurevar=c("Fd_puniceus_oc_puncieus_sd_Y_aridus"), groupvars=c("quantile"), na.rm = T)
+r5 <- summarySE(na.omit(win_50kb_sd_R), measurevar=c("Fd_puniceus_sd_R_puncieus_sd_Y_aridus"), groupvars=c("quantile"), na.rm = T)
+
+r12 <- data.frame("quantile"=rep(levels(r1$quantile), 10), "N"=c(r1$N,r2$N,r3$N,r4$N,r5$N),"Fd"=c(r1$Fd_aurantiacus_puncieus_sd_Y_aridus,r2$Fd_calycinus_puncieus_sd_Y_aridus,r3$Fd_longiflorus_puncieus_sd_Y_aridus,r4$Fd_puniceus_oc_puncieus_sd_Y_aridus,r5$Fd_puniceus_sd_R_puncieus_sd_Y_aridus), "sd"=c(r1$sd,r2$sd,r3$sd,r4$sd,r5$sd),"se"=c(r1$se,r2$se,r3$se,r4$se,r5$se),"ci"=c(r1$ci,r2$ci,r3$ci,r4$ci,r5$ci),"P1"=c(rep("aurantiacus", 5),rep("calycinus", 5), rep("longiflorus", 5),rep("puniceus OC", 5),rep("puniceus SD red", 5)),"P3"=c(rep("aridus", 25))) 
+
+#pdf("aridus_average_Fd_cmmb_quantile_bins.pdf", height=6, width=26)
+library(svglite)
+svglite("aridus_average_Fd_cmmb_quantile_bins.svg", height=6, width=26)
+levels(r12$quantile)
+r12$quantile <- factor(r12$quantile, levels=c("[0,0.824]", "(0.824,1.51]", "(1.51,2.33]", "(2.33,3.66]", "(3.66,10.9]"))
+q <- ggplot(data=r12, aes(x=quantile, y=Fd)) +
+  geom_point(aes(color=P1), size=2.5)+
+  geom_errorbar(data=r12, aes(x=quantile, ymin=Fd-ci, ymax=Fd+ci, color=P1), width=0.5, size=1)+
+  scale_color_manual(values=c("blue","green","purple","orange","red"))+
+  labs(x = expression(cm/mb ~ quantile ~ bin),
+       y = expression(mean ~ italic(F[d]))) + 
+  expand_limits(y=0.00) + scale_y_continuous(breaks=seq(0.00,0.15,0.02))+
+  theme_bw()+theme(text=element_text(size=15))
+
+q+ facet_grid(cols=vars(P1))+theme(panel.spacing = unit(0.5, "cm"))
+dev.off
+
+
