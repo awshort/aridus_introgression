@@ -1,0 +1,66 @@
+df1 <- read.csv("Fd.pi_dxy.w_50000.m_5000.raw_unified_genotyper_postBQSR_all_sites.geno.csv", header=TRUE)
+df1$Fd_aurantiacus_puncieus_sd_Y_aridus = ifelse(df1$Fd_aurantiacus_puncieus_sd_Y_aridus < 0.0, 0, df1$Fd_aurantiacus_puncieus_sd_Y_aridus)
+df1$Fd_aurantiacus_puncieus_sd_Y_aridus = ifelse(df1$Fd_aurantiacus_puncieus_sd_Y_aridus > 1.0, 0, df1$Fd_aurantiacus_puncieus_sd_Y_aridus)
+df1$Fd_calycinus_puncieus_sd_Y_aridus = ifelse(df1$Fd_calycinus_puncieus_sd_Y_aridus < 0.0, 0, df1$Fd_calycinus_puncieus_sd_Y_aridus)
+df1$Fd_calycinus_puncieus_sd_Y_aridus = ifelse(df1$Fd_calycinus_puncieus_sd_Y_aridus > 1.0, 0, df1$Fd_calycinus_puncieus_sd_Y_aridus)
+df1$Fd_longiflorus_puncieus_sd_Y_aridus = ifelse(df1$Fd_longiflorus_puncieus_sd_Y_aridus < 0.0, 0, df1$Fd_longiflorus_puncieus_sd_Y_aridus)
+df1$Fd_longiflorus_puncieus_sd_Y_aridus = ifelse(df1$Fd_longiflorus_puncieus_sd_Y_aridus > 1.0, 0, df1$Fd_longiflorus_puncieus_sd_Y_aridus)
+df1$Fd_puniceus_oc_puncieus_sd_Y_aridus = ifelse(df1$Fd_puniceus_oc_puncieus_sd_Y_aridus < 0.0, 0, df1$Fd_puniceus_oc_puncieus_sd_Y_aridus)
+df1$Fd_puniceus_oc_puncieus_sd_Y_aridus = ifelse(df1$Fd_puniceus_oc_puncieus_sd_Y_aridus > 1.0, 0, df1$Fd_puniceus_oc_puncieus_sd_Y_aridus)
+df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus = ifelse(df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus < 0.0, 0, df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus)
+df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus = ifelse(df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus > 1.0, 0, df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus)
+
+df4 <-  data.frame("Fd_aur_pun_SD_Y_arid"=df1$Fd_aurantiacus_puncieus_sd_Y_aridus, "Fd_caly_pun_SD_Y_arid"=df1$Fd_calycinus_puncieus_sd_Y_aridus, "Fd_lon_pun_SD_Y_arid"=df1$Fd_longiflorus_puncieus_sd_Y_aridus, "Fd_pun_OC_pun_SD_Y_arid"=df1$Fd_puniceus_oc_puncieus_sd_Y_aridus, "Fd_pun_SD_R_pun_SD_Y_arid"=df1$Fd_puniceus_sd_R_puncieus_sd_Y_aridus)
+
+df4$scaffold <- df1$scaffold
+df4$mid <- df1$mid
+head(df4)
+
+chrom_list<-read.table("chr_ends.txt",header=T)
+chrom_list$add<-c(0,cumsum(chrom_list$end)[0:9])
+chrom_list
+
+df4$mid<-df4$mid+chrom_list[match(df4$scaffold,chrom_list$chrom_num),3]
+df4$scaffold_new = factor(df4$scaffold, levels=c('LG1','LG2','LG3','LG4','LG5','LG6','LG7','LG8','LG9','LG10'))
+
+library(scales)
+smooth_Fd_aur_pun_SD_Y_arid <- loess(Fd_aur_pun_SD_Y_arid ~ mid, data = df4, span=0.03)
+smooth_Fd_caly_pun_SD_Y_arid <- loess(Fd_caly_pun_SD_Y_arid ~ mid, data = df4, span=0.03)
+smooth_Fd_lon_pun_SD_Y_arid <- loess(Fd_lon_pun_SD_Y_arid ~ mid, data = df4, span=0.03)
+smooth_Fd_pun_OC_pun_SD_Y_arid <- loess(Fd_pun_OC_pun_SD_Y_arid ~ mid, data = df4, span=0.03)
+smooth_Fd_pun_SD_R_pun_SD_Y_arid <- loess(Fd_pun_SD_R_pun_SD_Y_arid ~ mid, data = df4, span=0.03)
+
+pdf("smoothed_Fd_genomewide_aridus.pdf", height=5, width=20)
+par(mfrow = c(1, 1)) ## set number of plots to produce on the same page, in c(nrows,ncolumns)
+
+par(mar=c(4.5,4.5,1,1)) ###plot margins -- if you always include this, then all plots will have the same dimensions.
+
+plot(0, cex=0.2, xaxt="n", type="n", cex.axis=1, ylab=expression(italic(F[d])), frame.plot=FALSE, pch=20, col="white", xlim=c(0,195292004), ylim=c(0,0.2), las = 1, cex.lab=1.5,cex.main=1,cex.sub=1.5, xlab = " ", main="aridus as P3")
+l<- "grey77" #Dark box color
+d<- "gray91" #Light box color
+
+
+#dimensions to draw rectangles behind each chromosome, using these positions: (xleft, ybottom, xright, ytop).
+### may need to change ytop, depending on the statistic, so it matches the scale of the y-axis
+
+rect(0,0,20551962,1, border=l, col=l)#chr 1
+rect(20551962,0,44898679,1, border=d, col=d)#chr 2
+rect(44898679,0,65697659,1, border=l, col=l) #chr 3
+rect(65697659,0,84254724,1, border=d, col=d) #chr 3
+rect(84254724,0,109811995,1,border=l, col=l) #chr 5
+rect(109811995,0,125577604,1,border=d, col=d) #chr 5
+rect(125577604,0,143108577,1,border=l, col=l) #chr 7
+rect(143108577,0,163376010,1,border=d, col=d) #chr 7
+rect(163376010,0,177886056,1,border=l, col=l) #chr 9
+rect(177886056,0,195292004,1,border=d, col=d) #chr 9
+
+lines(df4$mid, smooth_Fd_aur_pun_SD_Y_arid$fitted, cex = 1.0, pch = 20, col=alpha("blue", 0.5)) # plot as points
+lines(df4$mid, smooth_Fd_caly_pun_SD_Y_arid$fitted, cex = 1.0, pch = 20, col=alpha("green3", 0.5)) # plot as points
+lines(df4$mid, smooth_Fd_lon_pun_SD_Y_arid$fitted, cex = 1.0, pch = 20, col=alpha("purple", 0.5)) # plot as points
+lines(df4$mid, smooth_Fd_pun_OC_pun_SD_Y_arid$fitted, cex = 1.0, pch = 20, col=alpha("orange", 0.5)) # plot as points
+lines(df4$mid, smooth_Fd_pun_SD_R_pun_SD_Y_arid$fitted, cex = 1.0, pch = 20, col=alpha("red", 0.5)) # plot as points
+
+axis(1,at=chrom_list$add+chrom_list$end/2,tick = F,labels = 1:10, cex.axis=1.5)
+#legend('topright', c("aurantiacus", "calycinus", "longiflorus", "puniceus OC", "puniceus SD red"), fill = c("blue","green3","purple","orange","red"), cex=0.8)
+dev.off()
+
