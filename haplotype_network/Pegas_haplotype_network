@@ -1,0 +1,38 @@
+#Build haplotype network from FASTA file in R using the pegas package (https://cran.r-project.org/web/packages/pegas/index.html)
+
+library(pegas)
+x1 <- read.dna("MYB2.LG4.fasta","fasta")
+h <- haplotype(x1)
+d <- dist.dna(h, "N")
+nt <- rmst(d, quiet=TRUE)
+sz <- summary(h)
+nt.labs <- attr(nt, "labels")
+sz <- sz[nt.labs]
+attr(h, "index")
+rownames(h)
+subspecies <- c("aridus", "aridus", "aridus", "aridus", "aridus", "aridus", "aurantiacus", "aurantiacus", "aurantiacus", "aurantiacus", "aurantiacus", "aurantiacus", "aurantiacus", "aurantiacus", "puniceus_sd_Y", "puniceus_sd_Y", "calycinus", "calycinus", "calycinus", "calycinus", "calycinus", "calycinus", "calycinus", "calycinus", "clevelandii", "clevelandii", "clevelandii", "clevelandii", "clevelandii", "clevelandii", "puniceus_sd_R", "puniceus_sd_R", "parviflorus", "parviflorus", "puniceus_sd_Y", "puniceus_sd_Y", "puniceus_sd_R", "puniceus_sd_R", "parviflorus", "parviflorus", "parviflorus", "parviflorus", "parviflorus", "parviflorus", "puniceus_oc_Y", "puniceus_oc_Y", "puniceus_sd_R", "puniceus_sd_R", "puniceus_sd_Y", "puniceus_sd_Y", "longiflorus", "longiflorus", "longiflorus", "longiflorus", "longiflorus", "longiflorus", "longiflorus", "longiflorus", "puniceus_sd_R", "puniceus_sd_R", "puniceus_oc_R", "puniceus_oc_R", "puniceus_oc_R", "puniceus_oc_R", "puniceus_sd_Y", "puniceus_sd_Y", "puniceus_sd_Y", "puniceus_sd_Y", "puniceus_oc_R", "puniceus_oc_R", "rutilus", "rutilus", "rutilus", "rutilus", "rutilus", "rutilus", "rutilus", "rutilus", "aridus", "aridus", "puniceus_sd_R", "puniceus_sd_R", "puniceus_oc_Y", "puniceus_oc_Y", "puniceus_oc_Y", "puniceus_oc_Y")
+ss <- haploFreq(x1, fac=subspecies, haplo=h)
+ss <- ss[nt.labs, ]
+pdf("MYB2_Haplotype_Network.pdf", height=10, width=14)
+plot(nt, pie=ss, legend=c(-10,-10), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","darkred"), labels=FALSE)
+dev.off()
+
+plot(nt, pie=ss, legend=c(-90,30), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","mediumvioletred"), labels=FALSE, size=sqrt(sz*pi))
+xy <-  replot()
+
+pdf("MYB2_Haplotype_Network_2.pdf", height=10, width=14)
+plot(nt, pie=ss, legend=c(-90,30), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","mediumvioletred"), labels=FALSE, size=sqrt(sz*pi), xy = xy)
+dev.off()
+
+
+plot(nt, pie=ss, legend=c(-90,30), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","mediumvioletred"), labels=FALSE, size=sqrt(sz*10), xy = xy)
+xy <-  replot()
+pdf("MYB2_Haplotype_Network_3.pdf", height=10, width=14)
+plot(nt, pie=ss, legend=c(-90,30), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","mediumvioletred"), labels=FALSE, size=sqrt(sz*10), xy = xy)
+dev.off()
+
+plot(nt, pie=ss, legend=c(-90,30), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","mediumvioletred"), labels=FALSE, size=sqrt(sz*10), xy = xy)
+xy <-  replot()
+pdf("MYB2_Haplotype_Network_4.pdf", height=10, width=14)
+plot(nt, pie=ss, legend=c(-90,30), bg=c("chocolate4","blue","green","black","purple","pink","tomato","goldenrod","red","yellow","mediumvioletred"), labels=FALSE, size=sqrt(sz*10), xy = xy)
+dev.off()
