@@ -1,0 +1,16 @@
+# Calculate fd in 50kb windows with the yellow ecotype as P2, aridus as P3 and different clade C/D taxa as P1
+
+#!/bin/bash
+
+export PYTHONPATH=$PYTHONPATH:'/media/aidanwilliamshort/extradrive1/Spring_Rotation/genomics_general-master'
+
+source activate py2
+
+for TAXA in aurantiacus calycinus longiflorus puniceus_oc puniceus_sd_R
+do
+	
+	python2.7 '/genomics_general-master/ABBABABAwindows.py' -g nomissing_biallelic_clade_D_aridus_parviflorus.geno -w 50000 -m 50 -f phased -P1 $TAXA -P2 puniceus_sd_Y -P3 aridus -O clevelandii --popsFile whole_genome_sample_info.txt -T 10 -o w_50000.$TAXA.puniceus_sd_Y.aridus.nomissing_biallelic_clade_D_aridus_parviflorus.geno.fd.csv --writeFailedWindow --minData 0.5 
+	
+done
+
+
