@@ -1,0 +1,28 @@
+##Create VCFs for each species with just LG4
+bcftools view 'nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz' --regions LG4 -o LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf
+
+bgzip -c LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf > LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz
+
+tabix -p vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz'
+
+bedtools intersect -a 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf.gz' -b 'MYB2_sites_coords.bed' -header > MYB2.LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf
+
+vcftools --keep keep.txt --vcf 'MYB2.LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out MYB2.LG4.puniceus_sd_R.vcf
+
+vcftools --keep keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.puniceus_sd_R.vcf
+
+vcftools --keep aridus_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.aridus.vcf
+
+vcftools --keep yellow_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.puniceus_sd_Y.vcf
+
+vcftools --keep rutilus_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.rutilus.vcf
+
+vcftools --keep OC_R_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.OC_R.vcf
+
+vcftools --keep SD_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.SD.vcf
+
+vcftools --keep OC_Y_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.OC_Y.vcf
+
+vcftools --keep lon_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.lon.vcf
+
+vcftools --keep parv_keep.txt --vcf 'LG4.nomissing_biallelic_clade_D_aridus_parviflorus.vcf' --recode --out LG4.parv.vcf
