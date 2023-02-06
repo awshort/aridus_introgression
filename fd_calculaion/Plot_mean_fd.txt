@@ -1,0 +1,65 @@
+# Read in files
+
+df1 <- read.csv("Fd.pi_dxy.w_50000.m_5000.raw_unified_genotyper_postBQSR_all_sites.geno.csv", header=TRUE)
+df2 <- subset(df1, Fd_aurantiacus_puncieus_sd_Y_aridus <= 1.0)
+df3 <- subset(df2, Fd_aurantiacus_puncieus_sd_Y_aridus >= 0)
+df4 <- subset(df1, Fd_calycinus_puncieus_sd_Y_aridus <= 1.0)
+df5 <- subset(df4, Fd_calycinus_puncieus_sd_Y_aridus >= 0)
+df6 <- subset(df1, Fd_longiflorus_puncieus_sd_Y_aridus <= 1.0)
+df7 <- subset(df6, Fd_longiflorus_puncieus_sd_Y_aridus >= 0)
+df8 <- subset(df1, Fd_puniceus_oc_puncieus_sd_Y_aridus <= 1.0)
+df9 <- subset(df8, Fd_puniceus_oc_puncieus_sd_Y_aridus >= 0)
+df10 <- subset(df1, Fd_puniceus_sd_R_puncieus_sd_Y_aridus <= 1.0)
+df11 <- subset(df10, Fd_puniceus_sd_R_puncieus_sd_Y_aridus >= 0)
+
+# Calculate mean Fd with aridus as P3 and da between the yellow ecotype and the different P1s
+
+t1 <- data.frame("Fd"=c(df3$Fd_aurantiacus_puncieus_sd_Y_aridus,df5$Fd_calycinus_puncieus_sd_Y_aridus,df7$Fd_longiflorus_puncieus_sd_Y_aridus,df9$Fd_puniceus_oc_puncieus_sd_Y_aridus,df11$Fd_puniceus_sd_R_puncieus_sd_Y_aridus), "P1"=c(rep("aurantiacus", nrow(df3)), rep("calycinus", nrow(df5)),rep("longiflorus", nrow(df7)),rep("puniceus oc", nrow(df9)),rep("puniceus sd R", nrow(df11))),"P3"=c(rep("aridus", (nrow(df3)+nrow(df5)+nrow(df7)+nrow(df9)+nrow(df11)))))
+
+t2 <- data.frame("da"=c(df1$pixy_da_aurantiacus_puniceus_SD_Y,df1$pixy_da_calycinus_puniceus_SD_Y,df1$pixy_da_longiflorus_puniceus_SD_Y,df1$pixy_da_puniceus_OC_puniceus_SD_Y,df1$pixy_da_puniceus_SD_R_puniceus_SD_Y), "P1"=c(rep("aurantiacus", nrow(df1)), rep("calycinus", nrow(df1)),rep("longiflorus", nrow(df1)),rep("puniceus oc", nrow(df1)),rep("puniceus sd R", nrow(df1))),"P3"=c(rep("aridus", (5*nrow(df1)))))
+
+nrow(t1)
+head(t1)
+
+library(Rmisc) 
+t3 <- summarySE(t1, measurevar=c("Fd"), groupvars=c("P1","P3"))
+t4 <- summarySE(t2, measurevar=c("da"), groupvars=c("P1","P3"))
+t5 <- data.frame("P1"=t3$P1, "P3"=t3$P3, "N"=t3$N, "Fd"=t3$Fd, "Fd.sd"=t3$sd, "Fd.se" = t3$se, "Fd.ci" = t3$ci, "da"=t4$da, "da.sd"=t4$sd, "da.se" = t4$se, "da.ci" = t4$ci)
+head(t5)
+
+#Plot mean Fd and da
+
+library(tidyverse)
+pd <- position_dodge(0.0005)
+pdf("mean_Fd_da_aridus_removed.pdf", height = 10, width = 10)
+ggplot(t5, aes(x=da, y=Fd, colour=P1, shape=P3)) + 
+    geom_errorbar(aes(ymin=Fd-Fd.ci, ymax=Fd+Fd.ci), width=.0002, size=0.5, alpha=0.5) +
+    geom_point(size=4, alpha=0.5)+ scale_color_manual(values=c("blue","green3", "purple", "orange", "red")) +
+  labs(title = expression(mean~italic(F[d])~and~italic(d[a])~with~puniceus~SD~yellow~as~P2),
+       x = expression(mean ~ italic(d[a]) ~ between~P1~and~P2),
+       y = expression(mean ~ italic(F[d]))) + 
+  expand_limits(y=0.00, x=0.0) +                      
+  theme_bw(base_size = 15)
+dev.off()
+
+pdf("mean_Fd_da_aridus_removed_2.pdf", height = 10, width = 10)
+ggplot(t5, aes(x=da, y=Fd, colour=P1, shape=P3)) + 
+    geom_errorbar(aes(ymin=Fd-Fd.se, ymax=Fd+Fd.se), width=.0002, size=0.5, alpha=0.5) +
+    geom_point(size=4, alpha=0.5)+ scale_color_manual(values=c("blue","green3", "purple", "orange", "red")) +
+  labs(title = expression(mean~italic(F[d])~and~italic(d[a])~with~puniceus~SD~yellow~as~P2),
+       x = expression(mean ~ italic(d[a]) ~ between~P1~and~P2),
+       y = expression(mean ~ italic(F[d]))) + 
+  theme_bw()
+
+pdf("mean_Fd_da_aridus_removed_3.pdf", height = 10, width = 10)
+ggplot(t5, aes(x=da, y=Fd, colour=P1, shape=P3)) + 
+    geom_errorbar(aes(ymin=Fd-Fd.ci, ymax=Fd+Fd.ci), width=.0002, size=0.5, alpha=0.7) +
+    geom_point(size=5, alpha=0.7)+ scale_color_manual(values=c("blue","green3", "purple", "orange", "red")) +
+  labs(x = expression(mean ~ italic(d[a]) ~ between~P1~and~P2),
+       y = expression(mean ~ italic(F[d]))) + 
+  expand_limits(y=0.00, x=0.0) +                      
+  theme_bw(base_size = 15)
+dev.off()
+
+
+
