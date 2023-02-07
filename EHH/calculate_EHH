@@ -1,0 +1,61 @@
+# Calculate EHH from a VCF file using the rehh and vcfR packages
+
+library(rehh)
+library(vcfR)
+
+hh <- data2haplohh(hap_file = "LG4.puniceus_sd_R.vcf",
+                       vcf_reader = "vcfR",
+                       polarize_vcf = FALSE)
+                      
+
+res2 <- calc_ehhs(hh, mrk = 826442, include_nhaplo = TRUE, discard_integration_at_border = FALSE)
+
+par(mar=c(5,5,1.5,1.5)) ###plot margins -- if you always include this, then all plots will have the same dimensions.
+plot(res2, xlim=c(12316607,12321000), main="EHHS around MaMYB2", col="red")
+
+
+hh3 <- data2haplohh(hap_file = "LG4.puniceus_sd_Y.vcf",
+                       vcf_reader = "vcfR",
+                       polarize_vcf = FALSE)
+
+res4 <- calc_ehhs(hh3, mrk = 826442, include_nhaplo = TRUE, discard_integration_at_border = FALSE)
+
+plot(res4, xlim=c(12316607,12321000), main="EHHS around MaMYB2", col="yellow3")
+
+
+hh4 <- data2haplohh(hap_file = "LG4.rutilus.vcf",
+                       vcf_reader = "vcfR",
+                       polarize_vcf = FALSE)
+
+res5 <- calc_ehhs(hh4, mrk = 826442, include_nhaplo = TRUE, discard_integration_at_border = FALSE)
+
+plot(res5, xlim=c(12316607,12321000), main="EHHS around MaMYB2", col="purple", lty=2)
+
+hh5 <- data2haplohh(hap_file = "LG4.OC_R.vcf",
+                       vcf_reader = "vcfR",
+                       polarize_vcf = FALSE)
+
+res6 <- calc_ehhs(hh5, mrk = 826442, include_nhaplo = TRUE, discard_integration_at_border = FALSE)
+
+plot(res6, xlim=c(12316607,12321000), main="EHHS around MaMYB2", col="goldenrod", lty=2)
+
+library(svglite)
+svg("EHHs_clade_D_reds_aridus_MYB2.svg", height=20, width=10)
+par(mfrow = c(3, 1)) ## set number of plots to produce on the same page, in c(nrows,ncolumns)
+par(mar=c(5,5,1.5,1.5)) ###plot margins -- if you always include this, then all plots will have the same dimensions.
+plot(res2, xlim=c(12316607,12321000), main="red ecotype", col="red", lwd=3)
+plot(res6, xlim=c(12316607,12321000), main="OC (red)", col="goldenrod", lty=2, lwd=3)
+plot(res5, xlim=c(12316607,12321000), main="longiflorus (red)", col="purple", lty=2, lwd=3)
+
+dev.off()
+
+
+svg("EHHs_red_yellow_MYB2.svg", width=10, height=10)
+par(mfrow = c(2, 1)) ## set number of plots to produce on the same page, in c(nrows,ncolumns)
+par(mar=c(5,5,1.5,1.5)) ###plot margins -- if you always include this, then all plots will have the same dimensions.
+plot(res2, xlim=c(12316607,12321000), main="red ecotype", col="red", lwd=3)
+plot(res4, xlim=c(12316607,12321000), main="yellow ecotype", col="yellow3", lwd=3)
+
+dev.off()
+
+
