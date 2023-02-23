@@ -1,0 +1,67 @@
+#Create sampling map in R
+
+#load tigris package (https://cran.r-project.org/web/packages/tigris/tigris.pdf)
+library(tigris)
+
+# download map of California counties
+ca_counties <- counties(state = "CA", cb = TRUE, class = "sf")
+
+#plot collection sites on map of California
+library(ggplot2)
+wgs_collections <- read.csv("WGS_samples.csv")
+pdf("sampling_map_13.pdf", width=25, height=25)
+ggplot() +
+    geom_sf(data = ca_counties, fill="black", color="black")+
+    geom_point(data=wgs_collections, aes(x=Longitude, y=Latitude, fill=Taxon, shape=Flower_Color), size = 8, alpha=0.7) + scale_fill_manual(values = c("brown", #Yellow
+"blue", #Red
+"green", #Yellow
+"black", #Green
+"grey",
+"purple", #Orpiment
+"hotpink", #Sky
+"orange",
+"red", #Forest
+"yellow", #Turquoise
+"#9DCC00", #Lime
+"#F0A3FF", #Amethyst
+"#740AFF", #Violet
+"#426600", #Quagmire
+"#C20088", #Mallow
+"#94FFB5"))+ scale_shape_manual(values = c(22,21))+
+    coord_sf(expand=FALSE) + theme_bw(base_size=30) + theme(legend.position = "none",   axis.text = element_blank(),
+  axis.line = element_blank(),
+  axis.ticks = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  axis.title = element_blank())
+dev.off()
+
+
+#plot collection sites on map of Southern California
+wgs_collections <- read.csv("WGS_samples.csv")
+pdf("sampling_map_14.pdf", width=25, height=20)
+ggplot() +
+    geom_sf(data = ca_counties, fill="black", color="black")+
+    geom_point(data=wgs_collections, aes(x=Longitude, y=Latitude, fill=Taxon, shape=Flower_Color), size = 8, alpha=0.7) + scale_fill_manual(values = c("brown", #Yellow
+"blue", #Red
+"green", #Yellow
+"black", #Green
+"grey",
+"purple", #Orpiment
+"hotpink", #Sky
+"orange",
+"red", #Forest
+"yellow", #Turquoise
+"#9DCC00", #Lime
+"#F0A3FF", #Amethyst
+"#740AFF", #Violet
+"#426600", #Quagmire
+"#C20088", #Mallow
+"#94FFB5"))+ scale_shape_manual(values = c(22,21))+
+    coord_sf(xlim=c(-121, -115), ylim=c(32.5, 36), expand=FALSE) + theme_bw(base_size=30) + theme(legend.position = "none",  axis.text = element_blank(),
+  axis.line = element_blank(),
+  axis.ticks = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  axis.title = element_blank())
+dev.off()
