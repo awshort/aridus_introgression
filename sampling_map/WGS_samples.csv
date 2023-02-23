@@ -1,0 +1,48 @@
+Sample,Latitude,Longitude,Taxon,Flower_Color
+159_83,32.663,-116.223,aridus,yellow
+159_84,32.663,-116.223,aridus,yellow
+195_1,32.63,-116.1429,aridus,yellow
+T84,32.6526,-116.2449,aridus,yellow
+T102,39.0424,-122.7727,aurantiacus,yellow
+T104,39.2045,-123.7646,aurantiacus,yellow
+T50,35.9865,-121.4928,aurantiacus,yellow
+T92,37.8459,-120.611,aurantiacus,yellow
+T144,34.1929,-117.2784,calycinus,yellow
+T150,33.8564,-116.8481,calycinus,yellow
+T90,35.5918,-118.5052,calycinus,yellow
+T91,35.3172,-118.5871,calycinus,yellow
+T101,39.5536,-121.4301,grandiflorus,yellow
+T61,39.559,-120.8243,grandiflorus,yellow
+T96,39.0122,-120.7552,grandiflorus,yellow
+T99,39.4376,-121.0599,grandiflorus,yellow
+DPR,33.7459,-117.4485,longiflorus,yellow
+SS,34.2722,-118.61,longiflorus,yellow
+T33,34.3438,-118.5099,longiflorus,yellow
+T8,34.1347,-118.6452,longiflorus,yellow
+KK168,34.018,-119.673,parviflorus,red
+KK161,34.018,-119.673,parviflorus,red
+KK180,34.018,-119.673,parviflorus,red
+KK182,34.0193,-119.6802,parviflorus,red
+ELF,33.086,-117.1453,puniceus_SD_R,red
+JMC,32.7373,-116.9541,puniceus_SD_R,red
+LH,33.0609,-117.1188,puniceus_SD_R,red
+MT,32.821,-117.0618,puniceus_SD_R,red
+UCSD,32.8894,-117.2362,puniceus_SD_R,red
+BCRD,32.9496,-116.638,puniceus_SD_Y,yellow
+INJ,33.0979,-116.6643,puniceus_SD_Y,yellow
+LO,32.6767,-116.3312,puniceus_SD_Y,yellow
+PCT,32.7326,-116.4698,puniceus_SD_Y,yellow
+POTR,32.6038,-116.6339,puniceus_SD_Y,yellow
+CLV_GH,33.1589,-116.8122,clevelandii,yellow
+ CLV_11,33.3391,-116.9325,clevelandii,yellow
+CLV_4,33.3391,-116.9325,clevelandii,yellow
+RUT_DPR_R12     ,33.7459,-117.4485,longiflorus,red
+RUT_MBR4_R3     ,34.161392,-117.682386,longiflorus,red
+RUT_SS_R19      ,34.2722,-118.61,longiflorus,red
+RUT_WTF_R1      ,34.217389,-117.763036,longiflorus,red
+MTH17   ,33.614124,-117.825181,puniceus_oc,red
+RPR16,33.605751,-117.802002,puniceus_oc,red
+MTH15   ,33.614124,-117.825181,puniceus_oc,red
+LFP13   ,33.653179,-117.657928,puniceus_oc,yellow
+VCR14   ,33.487141,-117.648984,puniceus_oc,yellow
+VCR17,33.487141,-117.648984,puniceus_oc,yellow
